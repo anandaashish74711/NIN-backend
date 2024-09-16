@@ -12,3 +12,36 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Patient {
+  id          Int       @id @default(autoincrement())
+  ehrId       String    @unique // EHR ID from EHRbase
+  name        String
+  visits      Visit[]   // Relation to Visits
+}
+
+model Visit {
+  id              Int             @id @default(autoincrement())
+  patientId       Int             // Foreign Key to Patient
+  patient         Patient         @relation(fields: [patientId], references: [id])
+  visitDate       DateTime        // Visit date
+  clinicalData    ClinicalData[]  // Relation to clinical data
+  sensorData      SensorData[]    // Relation to sensor data
+  compositionId   String          // The Composition ID from EHRbase for visit summary
+}
+
+model ClinicalData {
+  id             Int       @id @default(autoincrement())
+  visitId        Int       // Foreign Key to Visit
+  visit          Visit     @relation(fields: [visitId], references: [id])
+  compositionId  String    // The Composition ID in EHRbase for clinical data
+  data           Json      // The actual clinical data in JSON format
+}
+
+model SensorData {
+  id             Int       @id @default(autoincrement())
+  visitId        Int       // Foreign Key to Visit
+  visit          Visit     @relation(fields: [visitId], references: [id])
+  compositionId  String    // The Composition ID in EHRbase for sensor data
+  data           Json      // The actual sensor data in JSON format
+}
