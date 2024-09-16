@@ -4,6 +4,7 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,10 +13,13 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+   
+
 
 model Patient {
   id          Int       @id @default(autoincrement())
   ehrId       String    @unique // EHR ID from EHRbase
+  compositionId String?
   name        String
   visits      Visit[]   // Relation to Visits
 }
@@ -45,3 +49,4 @@ model SensorData {
   compositionId  String    // The Composition ID in EHRbase for sensor data
   data           Json      // The actual sensor data in JSON format
 }
+
