@@ -1,5 +1,9 @@
+// server.js or app.js
 import express, { Request, Response } from 'express';
 const ehrRouter = require('./src/routes/ehrRoutes');
+const bodyParser = require('body-parser');
+const patientRoutes = require('./src/routes/PatientRoute');
+const visitroute = require('./src/routes/VisitRoute');
 
 const app = express();
 const PORT = process.env.PORT || 3002;
@@ -11,7 +15,11 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello, World!');
 });
 
+app.use(bodyParser.json());
+
+app.use('/api', patientRoutes);
 app.use('/api', ehrRouter);
+app.use('/api', visitroute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -28,7 +28,7 @@ model Visit {
   id              Int             @id @default(autoincrement())
   patientId       Int             // Foreign Key to Patient
   patient         Patient         @relation(fields: [patientId], references: [id])
-  visitDate       DateTime        // Visit date
+  visitDate       DateTime        
   clinicalData    ClinicalData[]  // Relation to clinical data
   sensorData      SensorData[]    // Relation to sensor data
   compositionId   String          // The Composition ID from EHRbase for visit summary
