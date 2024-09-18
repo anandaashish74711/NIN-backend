@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { addVisit } = require('../models/VisitModel');
 const { findPatientByEhrId } = require('../models/FindehrModel')
-const { updatePatient } = require('../models/PatientModel');
+
 
 const postVisitData = async (ehrId, visitData) => {
   const credentials = Buffer.from('ehrbase:ehrbase').toString('base64');

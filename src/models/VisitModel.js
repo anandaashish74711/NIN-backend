@@ -22,9 +22,9 @@ async function addVisit(patientId, compositionId) {
     return newVisit;
   } catch (error) {
     console.error('Error creating visit:', error);
-    throw error; // Rethrow the error to handle it elsewhere if needed
+    throw error; 
   } finally {
-    await prisma.$disconnect(); // Ensure PrismaClient disconnects after the query
+    await prisma.$disconnect(); 
   }
 }
 
