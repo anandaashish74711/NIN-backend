@@ -39,7 +39,7 @@ model ClinicalData {
   visitId        Int       // Foreign Key to Visit
   visit          Visit     @relation(fields: [visitId], references: [id])
   compositionId  String    // The Composition ID in EHRbase for clinical data
-  data           Json      // The actual clinical data in JSON format
+  
 }
 
 model SensorData {

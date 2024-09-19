@@ -1,10 +1,11 @@
 
 import  express  from "express";
-const { handleUpdatePatientData } = require('../controllers/PatientController');
+const { handleUpdatePatientData , handleFetchAllPatients} = require('../controllers/PatientController');
 
 const router = express.Router();
 
-router.patch('/update-patient',  handleUpdatePatientData);
+router.patch('/update-patient', handleUpdatePatientData);
+ router.get('/getallpatients', handleFetchAllPatients);
 
 module.exports = router;
 

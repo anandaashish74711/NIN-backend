@@ -21,6 +21,7 @@ app.use('/api', patientRoutes);
 app.use('/api', ehrRouter);
 app.use('/api', visitroute);
 
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

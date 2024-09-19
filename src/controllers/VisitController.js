@@ -1,47 +1,6 @@
-const axios = require('axios');
-const { addVisit } = require('../models/VisitModel');
-const { findPatientByEhrId } = require('../models/FindehrModel')
 
-
-const postVisitData = async (ehrId, visitData) => {
-  const credentials = Buffer.from('ehrbase:ehrbase').toString('base64');
-
-  try {
-    // Replace `ehr_projectX_visit_registration_v1` with your actual templateId
-    const response = await axios.post(`http://localhost:8080/ehrbase/rest/ecis/v1/composition?format=FLAT&templateId=visit.v1&ehrId=${ehrId}`, visitData, {
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        'Authorization': `Basic ${credentials}`
-      }
-    });
-
-    if (response.data && response.data.compositionUid) {
-      const compositionUid = response.data.compositionUid;
-      console.log(response.data)
-
-      // Retrieve the patientId from the ehrId
-      const patient = await findPatientByEhrId(ehrId); 
-      if (!patient) {
-        throw new Error('Patient not found');
-      }
-
-      // Add visit record to the database
-      const newVisit = await addVisit(patient.id, compositionUid);
-
-      return {
-        success: true,
-        compositionUid,
-        newVisit
-      };
-    } else {
-      throw new Error('Invalid response from EHRbase');
-    }
-  } catch (error) {
-    console.error('Error sending visit data to EHRbase', error);
-    throw new Error('Error sending visit data to EHRbase');
-  }
-};
-// src/controllers/VisitController.js
+const { findPatientByEhrId } = require('../models/FindehrModel'); 
+const {fetchVisitsByPatient} =require('../services/VisitServices')
 const handlePostVisitData = async (req, res) => {
   console.log('Received a request to handlePostVisitData');
   console.log('Request method:', req.method);
@@ -65,6 +24,41 @@ const handlePostVisitData = async (req, res) => {
 };
 
 
+
+
+// Fetch visits for a specific patient based on ehrId or patientId
+const handleFetchVisitsByPatient = async (req, res) => {
+  const { ehrId } = req.query; 
+console.log(ehrId)
+  if (!ehrId) {
+    return res.status(400).json({ error: 'ehrId is required' });
+  }
+
+  try {
+   
+    const patient = await findPatientByEhrId(ehrId);
+    console.log(patient)
+    
+    if (!patient) {
+      return res.status(404).json({ error: 'Patient not found' });
+    }
+
+    // Fetch visits related to this patient
+    const visits = await fetchVisitsByPatient(patient.id);
+    
+    if (visits.length === 0) {
+      return res.status(200).json({ message: 'No visits found for this patient', visits: [] });
+    }
+
+    res.status(200).json({ visits });
+  } catch (error) {
+    console.error('Error fetching visits:', error.message);
+    res.status(500).json({ error: 'Error fetching visits' });
+  }
+};
+
+
 module.exports = {
-  handlePostVisitData
+  handlePostVisitData,
+  handleFetchVisitsByPatient
 };
