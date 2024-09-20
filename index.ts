@@ -4,6 +4,7 @@ const ehrRouter = require('./src/routes/ehrRoutes');
 const bodyParser = require('body-parser');
 const patientRoutes = require('./src/routes/PatientRoute');
 const visitroute = require('./src/routes/VisitRoute');
+const clinicalRoute=require('./src/routes/clinicalRoute')
 
 const app = express();
 const PORT = process.env.PORT || 3002;
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 app.use('/api', patientRoutes);
 app.use('/api', ehrRouter);
 app.use('/api', visitroute);
+app.use('/api',clinicalRoute);
 
 
 app.listen(PORT, () => {
