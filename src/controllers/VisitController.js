@@ -1,6 +1,8 @@
 
 const { findPatientByEhrId } = require('../models/FindehrModel'); 
-const {fetchVisitsByPatient} =require('../services/VisitServices')
+const { fetchVisitsByPatient } = require('../services/VisitServices');
+const { postVisitData} = require('../services/VisitServices');
+
 const handlePostVisitData = async (req, res) => {
   console.log('Received a request to handlePostVisitData');
   console.log('Request method:', req.method);

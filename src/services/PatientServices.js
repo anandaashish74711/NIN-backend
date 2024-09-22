@@ -6,12 +6,15 @@ const { updatePatient } = require('../models/PatientModel');
 
 const updatePatientData = async (ehrId, rawData) => {
   const credentials = Buffer.from('ehrbase:ehrbase').toString('base64');
-  const url = `http://localhost:8080/ehrbase/rest/ecis/v1/composition?format=FLAT&templateId=ehr_projectX_patient_registration_v1&ehrId=${ehrId}`;
+  const url = `http://localhost:8080/ehrbase/rest/ecis/v1/composition?format=FLAT&templateId=Patient_registration.v1&ehrId=${ehrId}`;
 
   try {
     console.log(rawData)
     // Extract the name from rawData
-     const name = rawData["ehr_projectx_patient_registration_v1/personal_details/demographics_container/person_name_isa/full_name"] || 'Unknown';
+    const name = rawData["patient_registration.v1/demographics/name"] || 'Unknown';
+    const email = rawData["patient_registration.v1/demographics/contact_information:0"];
+    const age = rawData["patient_registration.v1/age/age"];
+    const gender = rawData["patient_registration.v1/gender/gender"];
 
     
     // Validate that name is present
@@ -31,7 +34,7 @@ const updatePatientData = async (ehrId, rawData) => {
       const { compositionUid } = response.data;
 
       // Assuming `updatePatient` is a function to update the patient in your system
-      const updatedPatient = await updatePatient(ehrId, compositionUid, name);
+      const updatedPatient = await updatePatient(ehrId, compositionUid, name , email , age , gender);
 
       return {
         success: true,

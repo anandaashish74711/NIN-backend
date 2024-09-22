@@ -19,8 +19,11 @@ datasource db {
 model Patient {
   id          Int       @id @default(autoincrement())
   ehrId       String    @unique // EHR ID from EHRbase
-  compositionId String?
+  compositionId String? @unique
   name        String
+  email       String     @unique
+  age         String
+  gender      String
   visits      Visit[]   // Relation to Visits
 }
 

@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 async function addVisit(patientId, compositionId) {
   try {
-    // Parse and format the visitDate using date-and-time
+   
     
     const now = new Date();
     console.log("time",now)

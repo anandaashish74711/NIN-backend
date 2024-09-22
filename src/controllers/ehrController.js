@@ -61,7 +61,10 @@ async function createEhrAndStore(req, res) {
       data: {
         ehrId: ehrId,
         compositionId:"",
-        name:""
+        name: "",
+        email: "",
+        age: "",
+        gender:""
       },
     });
 
