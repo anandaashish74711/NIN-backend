@@ -9,9 +9,8 @@ const handlePostVisitData = async (req, res) => {
   console.log('Request query parameters:', req.query);
   console.log('Request body:', req.body);
 
-  const ehrId = req.query.ehrId; // Extract ehrId from query parameters
-  const visitData = req.body; // Extract visitData from request body
-
+  const ehrId = req.query.ehrId; d
+  const visitData = req.body; 
   if (!ehrId) {
     return res.status(400).json({ error: 'ehrId is required' });
   }
