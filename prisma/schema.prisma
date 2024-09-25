@@ -34,7 +34,7 @@ model Visit {
   visitDate       DateTime        
   clinicalData    ClinicalData[]  // Relation to clinical data
   sensorData      SensorData[]    // Relation to sensor data
-  compositionId   String          // The Composition ID from EHRbase for visit summary
+  compositionId   String          @unique// The Composition ID from EHRbase for visit summary
 }
 
 model ClinicalData {
